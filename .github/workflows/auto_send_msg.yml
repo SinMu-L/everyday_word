@@ -1,8 +1,9 @@
 name: send msg to feishu
 # 触发条件
 on:
+  push:
   schedule:
-    - cron: '*/2 * * * *'
+    - cron: '*/5 * * * *'
 
 # 设置上海时区
 env:
