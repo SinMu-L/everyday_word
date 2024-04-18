@@ -20,4 +20,8 @@ jobs:
       - name: exec request
         run: |
           curl --location --request POST 'https://everyday-word.onrender.com/workflow/everyday_word'
+      
+      - name: output time
+        run: |
+          echo date +'%Y-%m-%d %H:%M:%S'
 
