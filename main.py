@@ -1,4 +1,6 @@
 import os
+import random
+
 from starlette.responses import RedirectResponse
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
@@ -43,5 +45,22 @@ async def get_material(request: Request, text: str):
     return {"image_link": str(request.url_for("static", path="english.png")), "info_text": info_text}
 
 
+@app.get("/random_word")
+async def random_word():
+    with open("words.txt", "r", encoding="utf8") as fp:
+        data = fp.read()
+    all_line = data.split("\n")
+    # 生成随机数
+    index = random.randint(0, len(all_line) - 1)
+    line_text = all_line[index]
+    word = line_text.split("\t")[0]
+    return {"word": word}
+
+
+@app.get("/")
+async def index():
+    return {"status":"running..."}
+
 if __name__ == '__main__':
+
     uvicorn.run("main:app", port=5000, host="0.0.0.0")
