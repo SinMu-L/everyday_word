@@ -33,7 +33,7 @@ async def get_static_url():
 
 
 @app.get("/get_material")
-async def get_material(request: Request, text: str):
+async def get_material(text: str):
     yd = YouDao(app_key=os.getenv("YOUDAO_APP_KEY"), app_secret=os.getenv("YOUDAO_APP_SECRET"))
     res = yd.connect(q=text)
 
@@ -44,7 +44,7 @@ async def get_material(request: Request, text: str):
     image_name = "static/english.png"
     image_client = CusImage()
     image_client.create(text=text, image_name=image_name)
-    return {"image_link": str(request.url_for("static", path="english.png")), "info_text": info_text}
+    return { "info_text": info_text}
 
 
 @app.get("/random_word")
@@ -128,6 +128,14 @@ def send_msg_feishu():
     return {"error": False, "data": response.json()}
 
 
+@app.post("/workflow/everyday_word")
+async def workflow_everyday_word():
+    word = await random_word()
+    
+    print("word: ",word)
+    res = await get_material(text=word["word"])
+    print("res: ", res)
+    send_msg_feishu()
 
 @app.get("/")
 async def index():
