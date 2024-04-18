@@ -1,0 +1,23 @@
+name: send msg to feishu
+# 触发条件
+on:
+  schedule:
+    - cron: '*/2 * * * *'
+
+# 设置上海时区
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  run_task:
+    name: send img to feishu
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout resp
+        uses: actions/checkout@v2
+      
+      - name: exec request
+        uses: |
+          curl --location --request POST 'https://everyday-word.onrender.com/workflow/everyday_word'
+
