@@ -3,7 +3,7 @@ name: send msg to feishu
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 8 * * *'
+    - cron: '0 0 * * *'
 
 # 设置权限
 permissions:

@@ -33,7 +33,7 @@ async def get_static_url():
 
 
 @app.get("/get_material")
-async def get_material(text: str):
+async def get_material(text: str, image_name="static/cet4.png"):
     yd = YouDao(app_key=os.getenv("YOUDAO_APP_KEY"), app_secret=os.getenv("YOUDAO_APP_SECRET"))
     res = yd.connect(q=text)
 
@@ -41,15 +41,14 @@ async def get_material(text: str):
 
     info_text = f"{text}\n中文翻译：{res['translation']}\n解释：{explains}\n发音：{res['basic']['phonetic']}\n美式发音：{res['basic']['us-phonetic']}\n"
 
-    image_name = "static/english.png"
     image_client = CusImage()
     image_client.create(text=text, image_name=image_name)
     return { "info_text": info_text}
 
 
 @app.get("/random_word")
-async def random_word():
-    with open("words.txt", "r", encoding="utf8") as fp:
+async def random_word(wordfile: str="CET4.txt"):
+    with open(wordfile, "r", encoding="utf8") as fp:
         data = fp.read()
     all_line = data.split("\n")
     # 生成随机数
@@ -77,14 +76,14 @@ def get_feishu_tenant_access_token():
     res = response.json()
     return res.get("tenant_access_token", None)
 
-def upload_img_to_feishu(tenant_access_token):
+def upload_img_to_feishu(tenant_access_token, filepath:str="static/cet4.png"):
     print("tenant_access_token: ", tenant_access_token)
     if tenant_access_token == None:
         return {"error":True, "msg":"无法获取feishu的tenant_access_token"}
     
     url = "https://open.feishu.cn/open-apis/im/v1/images"
     form = {'image_type': 'message',
-            'image': (open('static/english.png', 'rb'))}  # 需要替换具体的path 
+            'image': (open(filepath, 'rb'))}  # 需要替换具体的path 
     multi_form = MultipartEncoder(form)
     headers = {
         'Authorization': f"Bearer {tenant_access_token}",  ## 获取tenant_access_token, 需要替换为实际的token
@@ -102,9 +101,9 @@ def upload_img_to_feishu(tenant_access_token):
 
 
 
-def send_img_feishu(tenant_access_token):
+def send_img_feishu(tenant_access_token, filepath):
     
-    img_key = upload_img_to_feishu(tenant_access_token=tenant_access_token)
+    img_key = upload_img_to_feishu(tenant_access_token=tenant_access_token, filepath=filepath)
     if not img_key:
         return {"error": True, "msg":"无法获取上传图片的 key"}
     url = "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id"
@@ -151,22 +150,33 @@ def send_msg_feishu(tenant_access_token, text):
 
     return {"error": False, "data": response.json()}
 
+
+async def generate_imgs(wordfile,image_name):
+    word = await random_word(wordfile=wordfile)
+    res = await get_material(text=word["word"], image_name=image_name)
+    return res
+
+
+def send(tenant_access_token:str, text:str, filepath):
+    try:
+        send_msg_feishu(tenant_access_token, text=text)
+    except Exception as e:
+        send_msg_feishu(tenant_access_token, text=text)
+    
+    
+    send_img_feishu(tenant_access_token=tenant_access_token, filepath=filepath)
+
+
 @app.post("/workflow/everyday_word")
 async def workflow_everyday_word():
-    
-    word = await random_word()
-    
-    print("word: ",word)
-    res = await get_material(text=word["word"])
     tenant_access_token = get_feishu_tenant_access_token()
-    try:
-        send_msg_feishu(tenant_access_token, text=res["info_text"])
-    except Exception as e:
-        send_msg_feishu(tenant_access_token, text=res["info_text"])
-    
-    
-    send_img_feishu(tenant_access_token)
-    return {"material": res}
+    CET4_res = await generate_imgs(wordfile="CET4.txt",image_name="static/cet4.png")
+    CET6_res = await generate_imgs(wordfile="CET6.txt",image_name="static/cet6.png")
+    send(tenant_access_token=tenant_access_token,text= CET4_res["info_text"], filepath="static/cet4.png")
+    send(tenant_access_token=tenant_access_token,text= CET6_res["info_text"], filepath="static/cet6.png")
+
+
+    return {"CET4_res": CET4_res, "CET6_res":CET6_res}
     
     
 
