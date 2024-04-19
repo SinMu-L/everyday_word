@@ -146,7 +146,8 @@ def send_msg_feishu(tenant_access_token, text):
     }
 
     response = request("POST", url, headers=headers, data=payload)
-    print(response)
+    if response.status_code != 200:
+        raise Exception("发送消息失败.")
 
     return {"error": False, "data": response.json()}
 
@@ -162,7 +163,10 @@ async def workflow_everyday_word():
     tenant_access_token = get_feishu_tenant_access_token()
     send_img_feishu(tenant_access_token)
     time.sleep(0.05)
-    send_msg_feishu(tenant_access_token, text=res["info_text"])
+    try:
+        send_msg_feishu(tenant_access_token, text=res["info_text"])
+    except Exception as e:
+        send_msg_feishu(tenant_access_token, text=res["info_text"])
 
 @app.get("/")
 async def index():
