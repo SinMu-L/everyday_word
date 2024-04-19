@@ -1,8 +1,13 @@
 name: send msg to feishu
 # 触发条件
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '0 */2 * * *'
+    - cron: '0 8 * * *'
+
+# 设置权限
+permissions:
+  contents: write
 
 # 设置上海时区
 env:

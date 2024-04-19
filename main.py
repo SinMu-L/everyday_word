@@ -102,8 +102,8 @@ def upload_img_to_feishu(tenant_access_token):
 
 
 
-def send_msg_feishu():
-    tenant_access_token = get_feishu_tenant_access_token()
+def send_img_feishu(tenant_access_token):
+    
     img_key = upload_img_to_feishu(tenant_access_token=tenant_access_token)
     if not img_key:
         return {"error": True, "msg":"无法获取上传图片的 key"}
@@ -128,14 +128,41 @@ def send_msg_feishu():
     return {"error": False, "data": response.json()}
 
 
+def send_msg_feishu(tenant_access_token, text):
+    url = "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id"
+    data = {
+        "receive_id": os.getenv("FEISHU_RECEIVE_ID"),
+        "msg_type": "text",
+        "content": json.dumps({
+            "text":f"{text}"
+        }),
+        "uuid": str(int(time.time()))
+    }
+    payload = json.dumps(data)
+
+    headers = {
+        'Authorization': f"Bearer {tenant_access_token}",
+        'Content-Type': 'application/json; charset=utf-8'
+    }
+
+    response = request("POST", url, headers=headers, data=payload)
+    print(response)
+
+    return {"error": False, "data": response.json()}
+
 @app.post("/workflow/everyday_word")
 async def workflow_everyday_word():
+    
     word = await random_word()
     
     print("word: ",word)
     res = await get_material(text=word["word"])
+    
     print("res: ", res)
-    send_msg_feishu()
+    tenant_access_token = get_feishu_tenant_access_token()
+    send_img_feishu(tenant_access_token)
+    time.sleep(0.05)
+    send_msg_feishu(tenant_access_token, text=res["info_text"])
 
 @app.get("/")
 async def index():
