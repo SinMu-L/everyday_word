@@ -158,15 +158,17 @@ async def workflow_everyday_word():
     
     print("word: ",word)
     res = await get_material(text=word["word"])
-    
-    print("res: ", res)
     tenant_access_token = get_feishu_tenant_access_token()
-    send_img_feishu(tenant_access_token)
-    time.sleep(0.05)
     try:
         send_msg_feishu(tenant_access_token, text=res["info_text"])
     except Exception as e:
         send_msg_feishu(tenant_access_token, text=res["info_text"])
+    
+    
+    send_img_feishu(tenant_access_token)
+    return {"material": res}
+    
+    
 
 @app.get("/")
 async def index():
