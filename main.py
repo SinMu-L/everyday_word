@@ -9,7 +9,7 @@ import uvicorn
 
 from dotenv import load_dotenv
 from feishu import FeiShu
-from utools import random_word, get_material
+from utools import random_word, get_material, get_word_info
 
 
 load_dotenv()
@@ -27,6 +27,13 @@ app.add_middleware(
     expose_headers=["*"],  # 暴露所有标头
 )
 
+
+@app.get("/trans_word")
+def trans_word(text: str):
+    if len(text) <= 0:
+        return {"error": True, "msg":"请传递 text 查询参数"}
+    info_text = get_word_info(text=text)
+    return {"info_text":info_text}
 
 @app.post("/workflow/everyday_word")
 async def workflow_everyday_word():
