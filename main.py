@@ -47,7 +47,8 @@ async def workflow_everyday_word():
 @app.post("/feishu_callback")
 async def feishu_callback(reqest: Request):
     data = await reqest.json()
-    return {"challenge": data["challenge"]}
+    if data.get("type", None) == "url_verification":
+        return {"challenge": data["challenge"]}
 
 @app.get("/")
 async def index():
