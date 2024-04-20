@@ -9,8 +9,8 @@ import uvicorn
 
 from dotenv import load_dotenv
 from feishu import FeiShu
-from utools import random_word, get_material, get_word_info
-
+from utools import random_word, get_material, get_word_info, get_img
+from CusImage import CusImage
 
 load_dotenv()
 
@@ -34,6 +34,14 @@ def trans_word(text: str):
         return {"error": True, "msg":"请传递 text 查询参数"}
     info_text = get_word_info(text=text)
     return {"info_text":info_text}
+
+@app.get("/generate_img")
+def generate_img(request: Request, word: str):
+    if len(word) <= 0:
+        return {"error": True, "msg":"请传递 word 查询参数"}
+    get_img(text=word,image_name="static/random_pic.png")
+    return {"img_link":str(request.url_for("static", path="random_pic.png"))}
+
 
 @app.post("/workflow/everyday_word")
 async def workflow_everyday_word():

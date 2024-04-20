@@ -23,9 +23,12 @@ def get_word_info(text: str):
     info_text = f"{text}\n中文翻译：{res['translation']}\n解释：{explains}\n发音：{res['basic']['phonetic']}\n美式发音：{res['basic']['us-phonetic']}\n"
     return info_text
 
-
-def get_material(text: str, image_name="static/cet4.png"):
-    info_text = get_word_info()
+def get_img(text: str, image_name:str):
     image_client = CusImage()
     image_client.create(text=text, image_name=image_name)
+
+def get_material(text: str, image_name="static/cet4.png"):
+    "获取随机的单词和图片"
+    info_text = get_word_info(text=text)
+    get_img(text=text, image_name=image_name)
     return info_text
