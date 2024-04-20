@@ -47,7 +47,7 @@ async def workflow_everyday_word():
 @app.post("/feishu_callback")
 def feishu_callback(reqest: Request):
     print(reqest.json()) 
-    return "lOZuHImwPIGK5GSq9PMwZb08sddR0kXO"
+    return ""
 
 @app.get("/")
 async def index():
