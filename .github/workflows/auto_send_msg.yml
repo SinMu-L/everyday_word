@@ -28,5 +28,5 @@ jobs:
       
       - name: output time
         run: |
-          echo date +'%Y-%m-%d %H:%M:%S'
+          echo `date +'%Y-%m-%d %H:%M:%S'`
 
