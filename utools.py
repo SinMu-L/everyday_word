@@ -17,7 +17,9 @@ def random_word(wordfile: str="CET4.txt"):
 def get_word_info(text: str):
     yd = YouDao(app_key=os.getenv("YOUDAO_APP_KEY"), app_secret=os.getenv("YOUDAO_APP_SECRET"))
     res = yd.connect(q=text)
-
+    print("翻译结果：", res)
+    if not res["isWord"]:
+        return None
     explains = "\n".join(res["basic"]["explains"])
 
     info_text = f"{text}\n中文翻译：{res['translation']}\n解释：{explains}\n发音：{res['basic']['phonetic']}\n美式发音：{res['basic']['us-phonetic']}\n"
@@ -30,5 +32,7 @@ def get_img(text: str, image_name:str):
 def get_material(text: str, image_name="static/cet4.png"):
     "获取随机的单词和图片"
     info_text = get_word_info(text=text)
+    if info_text == None:
+        info_text = get_word_info(text=text)
     get_img(text=text, image_name=image_name)
     return info_text
