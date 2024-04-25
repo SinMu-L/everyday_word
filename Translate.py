@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
-import json
-import sys
 import uuid
 import requests
 import hashlib
-import time
+import time, os
 
-import time
+from zhipuai import ZhipuAI
+
+ai_trans_prompt = lambda word: f"""
+将 {word} 翻译为中文，并生成一句话解释和音标
+
+---
+【中文释义】：
+【中文解释】：
+【音标】
+"""
+
 
 class YouDao:
     def __init__(self, app_key, app_secret):
@@ -51,5 +59,27 @@ class YouDao:
         if response.status_code == 200:
             return response.json()
 
+class ChatGLMTrans:
+    prompt_template = """
+将 {word} 翻译为中文，并生成一句话解释和音标
 
+---
+【中文释义】：
+【中文解释】：
+【音标】
+"""
+    def __init__(self) -> None:
+        self._api_key = os.getenv("ZHIPUAI_API_KEY")
+    
+    def chat(self, word) -> None:
+        client = ZhipuAI(api_key=self._api_key) # 填写您自己的APIKey
+        response = client.chat.completions.create(
+            model="glm-3-turbo",  # 填写需要调用的模型名称
+            messages=[
+                {"role": "user", "content": ai_trans_prompt(word)}
+            ]
+        )
+        
+        print("zhipu glm-3-turbo查询结果：",response.choices[0].message.content)
+        return response.choices[0].message.content
 

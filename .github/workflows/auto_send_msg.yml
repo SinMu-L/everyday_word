@@ -2,8 +2,8 @@ name: send msg to feishu
 # 触发条件
 on:
   workflow_dispatch:
-#  schedule:
-#    - cron: '0 0 * * *'
+  schedule:
+    - cron: '0 0 * * *'
 
 # 设置权限
 permissions:
