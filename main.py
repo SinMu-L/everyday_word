@@ -42,7 +42,7 @@ def generate_img(request: Request, word: str):
     get_img(text=word,image_name="static/random_pic.png")
     return {"img_link":str(request.url_for("static", path="random_pic.png"))}
 
-
+@app.post("/workflow/everyday_word")
 @app.get("/workflow/everyday_word")
 async def workflow_everyday_word():
     " 生成CET4 随机单词和图片 "
