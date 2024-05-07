@@ -1,4 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
+import random
 
 
 class CusImage:
@@ -8,7 +9,8 @@ class CusImage:
         width = 270
         height = int(16 * width / 9)
         # width, height = 400, 200
-        color = (224, 223, 191)  # 白色，RGB格式
+        # 随机一个颜色
+        color = (random.randint(200,255), random.randint(200,255), random.randint(200,255))  # 白色，RGB格式
         image = Image.new('RGB', (width, height), color)
 
         # 使用Windows系统下的宋体
