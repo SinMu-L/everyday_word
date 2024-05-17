@@ -10,7 +10,8 @@ import uvicorn
 from dotenv import load_dotenv
 from feishu import FeiShu
 from utools import random_word, get_material, get_word_info, get_img
-from CusImage import CusImage
+from CusImage import random_picture, CusImage
+
 
 load_dotenv()
 
@@ -46,18 +47,18 @@ def generate_img(request: Request, word: str):
 @app.get("/workflow/everyday_word")
 async def workflow_everyday_word():
     " 生成CET4 随机单词和图片 "
-    cet4_img = "static/cet4.png"
+    cet4_img = "static/random_pic4.png"
     cet4_word = random_word()
     print("cet4_word: ", cet4_word)
-    get_img(text=cet4_word, image_name=cet4_img)
+    get_img(text=cet4_word, image_name=cet4_img,type="random")
     cet4_info_text = get_word_info(word=cet4_word)
     feishu_client.send_img_feishu(filepath=cet4_img)
     feishu_client.send_msg_feishu(text=cet4_info_text)
 
     " 生成CET6 随机单词和图片"
-    cet6_img = "static/cet6.png"
+    cet6_img = "static/random_pic6.png"
     cet6_word = random_word(wordfile="CET6.txt")
-    get_img(text=cet6_word, image_name=cet6_img)
+    get_img(text=cet6_word, image_name=cet6_img,type="random")
     cet6_info_text = get_word_info(word=cet6_word)
     feishu_client.send_img_feishu(filepath=cet6_img)
     feishu_client.send_msg_feishu(text=cet6_info_text)
@@ -74,5 +75,13 @@ async def feishu_callback(reqest: Request):
 async def index():
     return {"status":"running..."}
 
+@app.get("/random_pic")
+async def random_pic():
+    random_picture()
+    cus_image = CusImage()
+    cus_image.random_pic(text="hello")
+    
+
 if __name__ == '__main__':
     uvicorn.run("main:app", port=5000, host="0.0.0.0")
+    

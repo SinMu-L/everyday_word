@@ -19,9 +19,12 @@ def get_word_info(word: str):
     info_text = ai_trans.chat(word=word)
     return info_text
 
-def get_img(text: str, image_name:str):
+def get_img(text: str, image_name:str, type:str="create"):
     image_client = CusImage()
-    image_client.create(text=text, image_name=image_name)
+    if type=="create":
+        image_client.create(text=text, image_name=image_name)
+    if type == "random":
+        image_client.random_pic(text=text, image_name=image_name)
 
 def get_material(text: str, image_name="static/cet4.png"):
     "获取随机的单词和图片"
