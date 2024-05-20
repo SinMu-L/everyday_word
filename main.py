@@ -50,7 +50,7 @@ async def workflow_everyday_word():
     cet4_img = "static/random_pic4.png"
     cet4_word = random_word()
     print("cet4_word: ", cet4_word)
-    get_img(text=cet4_word, image_name=cet4_img,type="random")
+    get_img(text=cet4_word, image_name=cet4_img)
     cet4_info_text = get_word_info(word=cet4_word)
     feishu_client.send_img_feishu(filepath=cet4_img)
     feishu_client.send_msg_feishu(text=cet4_info_text)
@@ -58,7 +58,7 @@ async def workflow_everyday_word():
     " 生成CET6 随机单词和图片"
     cet6_img = "static/random_pic6.png"
     cet6_word = random_word(wordfile="CET6.txt")
-    get_img(text=cet6_word, image_name=cet6_img,type="random")
+    get_img(text=cet6_word, image_name=cet6_img)
     cet6_info_text = get_word_info(word=cet6_word)
     feishu_client.send_img_feishu(filepath=cet6_img)
     feishu_client.send_msg_feishu(text=cet6_info_text)
