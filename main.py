@@ -33,7 +33,7 @@ app.add_middleware(
 def trans_word(text: str):
     if len(text) <= 0:
         return {"error": True, "msg":"请传递 text 查询参数"}
-    info_text = get_word_info(text=text)
+    info_text = get_word_info(word=text)
     return {"info_text":info_text}
 
 @app.get("/generate_img")
