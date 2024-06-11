@@ -23,7 +23,7 @@ class ChatGLMTrans:
     def chat(self, word) -> None:
         genai.configure(api_key=self._api_key)
 
-        model = genai.GenerativeModel(model_name='gemini-1.5-flash')
+        model = genai.GenerativeModel(model_name="gemini-1.5-flash")
         prompt = self.prompt_template.replace("{word}", word)
         response = model.generate_content(prompt)
         return response.text
