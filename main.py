@@ -1,4 +1,4 @@
-import os
+import time
 
 
 from fastapi import FastAPI, Request
@@ -55,6 +55,7 @@ async def workflow_everyday_word():
     get_img(text=cet4_word, image_name=cet4_img)
     cet4_info_text = get_word_info(word=cet4_word)
     feishu_client.send_img_feishu(filepath=cet4_img)
+    time.sleep(0.5)
     feishu_client.send_msg_feishu(text=cet4_info_text)
 
     " 生成CET6 随机单词和图片"
@@ -63,6 +64,7 @@ async def workflow_everyday_word():
     get_img(text=cet6_word, image_name=cet6_img)
     cet6_info_text = get_word_info(word=cet6_word)
     feishu_client.send_img_feishu(filepath=cet6_img)
+    time.sleep(0.5)
     feishu_client.send_msg_feishu(text=cet6_info_text)
 
     return {
