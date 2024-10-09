@@ -36,13 +36,14 @@ jobs:
           pip3 install -r requirements.txt
 
       - name: exec request
-        run: |
-          python main.py
+        
         env:
           GEMINI_FLASH_API_KEY: ${{ secrets.GEMINI_FLASH_API_KEY }}
           FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
           FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
           FEISHU_RECEIVE_ID: ${{ secrets.FEISHU_RECEIVE_ID }}
+        run: |
+          python main.py
       
       - name: output time
         run: |
