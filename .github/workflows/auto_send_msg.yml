@@ -43,7 +43,7 @@ jobs:
           FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
           FEISHU_RECEIVE_ID: ${{ secrets.FEISHU_RECEIVE_ID }}
         run: |
-          echo ${{ secrets.GEMINI_1.5_FLASH_API_KEY}}
+          echo `${{ secrets.GEMINI_FLASH_API_KEY}}`
       
       - name: output time
         run: |
