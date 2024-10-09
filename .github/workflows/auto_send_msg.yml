@@ -38,10 +38,10 @@ jobs:
         run: |
           python main.py
         env:
-          GEMINI_FLASH_API_KEY: env.GEMINI_FLASH_API_KEY
-          FEISHU_APP_ID: env.FEISHU_APP_ID
-          FEISHU_APP_SECRET: env.FEISHU_APP_SECRET
-          FEISHU_RECEIVE_ID: env.FEISHU_RECEIVE_ID
+          GEMINI_FLASH_API_KEY: ${{ env.GEMINI_FLASH_API_KEY }}
+          FEISHU_APP_ID: ${{ env.FEISHU_APP_ID }}
+          FEISHU_APP_SECRET: ${{ env.FEISHU_APP_SECRET }}
+          FEISHU_RECEIVE_ID: ${{ env.FEISHU_RECEIVE_ID }}
       
       - name: output time
         run: |
