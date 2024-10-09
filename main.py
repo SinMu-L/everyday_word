@@ -94,5 +94,5 @@ async def random_pic():
 
 
 if __name__ == "__main__":
-    workflow_everyday_word()
+    await workflow_everyday_word()
     # uvicorn.run("main:app", port=5000, host="0.0.0.0")
