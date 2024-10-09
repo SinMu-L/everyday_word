@@ -19,9 +19,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout resp
+      - name: 安装依赖
         uses: actions/checkout@v2
-      
+      - name: exec request
+        run: |
+          pip install -r requirements.txt
+
       - name: exec request
         run: |
           python main.py
