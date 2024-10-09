@@ -45,8 +45,8 @@ def generate_img(request: Request, word: str):
     return {"img_link": str(request.url_for("static", path="random_pic.png"))}
 
 
-@app.post("/workflow/everyday_word")
-async def workflow_everyday_word():
+
+def workflow_everyday_word():
     "生成CET4 随机单词和图片"
     cet4_img = "static/random_pic4.png"
     cet4_word = random_word()
@@ -94,5 +94,5 @@ async def random_pic():
 
 
 if __name__ == "__main__":
-    await workflow_everyday_word()
+    workflow_everyday_word()
     # uvicorn.run("main:app", port=5000, host="0.0.0.0")

@@ -90,6 +90,6 @@ class FeiShu:
 
         response = request("POST", url, headers=self.headers, data=payload)
         if response.status_code != 200:
-            raise Exception("发送消息失败.")
+            raise Exception(f"发送消息失败.{response.text}")
 
         return {"error": False, "data": response.json()}

@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 23 * * *'
+  push:
+    branches: [ "master" ]
 
 # 设置权限
 permissions:
@@ -17,8 +19,13 @@ jobs:
   run_task:
     name: send img to feishu
     runs-on: ubuntu-latest
+    env:
+      GEMINI_FLASH_API_KEY=$GEMINI_FLASH_API_KEY
 
     steps:
+      - name: 获取环境变量
+        run: echo $GEMINI_FLASH_API_KEY
+
       - uses: actions/checkout@v4
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
@@ -32,6 +39,8 @@ jobs:
       - name: exec request
         run: |
           python main.py
+        env:
+          GEMINI_FLASH_API_KEY=$GEMINI_FLASH_API_KEY
       
       - name: output time
         run: |

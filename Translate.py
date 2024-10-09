@@ -18,7 +18,7 @@ class ChatGLMTrans:
 """
 
     def __init__(self) -> None:
-        self._api_key = os.getenv("GEMINI_1.5_FLASH_API_KEY")
+        self._api_key = os.getenv("GEMINI_FLASH_API_KEY")
 
     def chat(self, word) -> None:
         genai.configure(api_key=self._api_key)
