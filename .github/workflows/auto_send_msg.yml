@@ -24,7 +24,7 @@ jobs:
       
       - name: exec request
         run: |
-          curl --location --request POST 'https://word.sinmu.xyz/workflow/everyday_word'
+          python main.py
       
       - name: output time
         run: |
