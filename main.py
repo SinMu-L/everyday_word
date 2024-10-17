@@ -62,6 +62,7 @@ def workflow_everyday_word():
     cet6_word = random_word(wordfile="CET6.txt")
     get_img(text=cet6_word, image_name=cet6_img)
     cet6_info_text = get_word_info(word=cet6_word)
+    cet6_info_text += "\n\n#单词#单词打卡#音标#单词#英语单词速记#记单词#背单词#单词速记#英语单词速记#学习"
     feishu_client.send_img_feishu(filepath=cet6_img)
     time.sleep(0.5)
     feishu_client.send_msg_feishu(text=cet6_info_text)
