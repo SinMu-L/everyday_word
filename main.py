@@ -48,11 +48,13 @@ def generate_img(request: Request, word: str):
 
 def workflow_everyday_word():
     "生成CET4 随机单词和图片"
+    tags = "\n\n#单词#单词打卡#音标#单词#英语单词速记#记单词#背单词#单词速记#英语单词速记#学习"
     cet4_img = "static/random_pic4.png"
     cet4_word = random_word()
     print("cet4_word: ", cet4_word)
     get_img(text=cet4_word, image_name=cet4_img)
     cet4_info_text = get_word_info(word=cet4_word)
+    cet4_info_text += tags
     feishu_client.send_img_feishu(filepath=cet4_img)
     time.sleep(0.5)
     feishu_client.send_msg_feishu(text=cet4_info_text)
@@ -62,7 +64,7 @@ def workflow_everyday_word():
     cet6_word = random_word(wordfile="CET6.txt")
     get_img(text=cet6_word, image_name=cet6_img)
     cet6_info_text = get_word_info(word=cet6_word)
-    cet6_info_text += "\n\n#单词#单词打卡#音标#单词#英语单词速记#记单词#背单词#单词速记#英语单词速记#学习"
+    cet6_info_text += tags
     feishu_client.send_img_feishu(filepath=cet6_img)
     time.sleep(0.5)
     feishu_client.send_msg_feishu(text=cet6_info_text)
